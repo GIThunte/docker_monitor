@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/pi/Desktop/docker_monitor/env/env"
+VIRTUAL_ENV="/home/who/work/docker_monitor/env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

@@ -1,4 +1,4 @@
-#!/home/pi/Desktop/docker_monitor/env/bin/python3
+#!/home/who/work/docker_monitor/env/bin/python3
 
 import argparse
 import code
