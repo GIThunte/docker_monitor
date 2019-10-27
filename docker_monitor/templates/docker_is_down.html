@@ -1,17 +1,24 @@
+<!DOCTYPE html>
 <html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>Docker is down</title>
-  <style type="text/css">
-   .mm { 
-    background-color: blue;
-    max-width:100%;
-    max-height:100%;
+ <head>
+  <meta charset="utf-8">
+  <title>Error docker</title>
+  <style>
+   html { height: 100%; }
+   body {
+        margin: 0;
+        height: 100%; 
+        background: url(/static/images/docker.jpg); 
+        background-size: cover; 
+   }
+   h1{
+     color: white;
    }
   </style>
- </head> 
-<body>
-<div class="mm">
-    <img src="/static/images/docker.jpg" >
-</div>
-
+ </head>
+ <body>
+    {% if error %}
+        <div><h1>{{ error }}</h1></div>
+    {% endif %}
+ </body>
+</html>
