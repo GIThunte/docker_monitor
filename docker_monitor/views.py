@@ -22,4 +22,4 @@ def index():
 	            
 	    return render_template('index.html', container_list=logic.container_list(docker_sdk_client))
 	else:
-		return 'Please, check docker service'
+		return render_template('docker_is_down.html')
