@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- Custom fonts for this template-->
+<style type="text/css">
+    textarea {
+        width: 100%;
+        min-height: 30rem;
+        font-family: "Lucida Console", Monaco, monospace;
+        font-size: 12px;
+        line-height: 1.2;
+    }
+</style>
+{% if inspect %}
+<div><h5 class='h3'>Docker inspect:</h5></div>
+<div><textarea name="" id="myTextarea" cols="30" rows="10"></textarea></div>
+{% else %}
+<table border="1" class="table table-inverse">
+    <tr style='background:black; color: white'>
+        <td>Name</td>
+        <td>Container ID</td>
+        <td>Container Status</td>
+    </tr>
+    {% for iter in container_list %}
+    {% set id       = iter['id'] %}
+    {% set name     = iter['name'] %}
+    {% set status   = iter['status'] %}
+    <tr>
+        <td><a href="{{ url_for('index', cont_id = id) }}">{{ name }}</a></td>
+        <td>{{ id }}</td>
+        <td>{{ status }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+
+{% if container_logs %}
+<div><h5 class='h3'>Docker Logs:</h5></div>
+<div>
+    <textarea name="" id="contLogs" cols="30" rows="10">
+    {{ container_logs }}
+    </textarea>
+</div>
+{% endif %}
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+{% if inspect %}
+{% autoescape false %}
+<script type="text/javascript">
+    $('#myTextarea').text(JSON.stringify({{inspect}}, undefined, 4));
+</script>
+{% endautoescape %}
+{%endif%}
+
+{% endblock %}

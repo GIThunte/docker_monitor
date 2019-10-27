@@ -1,0 +1,45 @@
+<style type="text/css">
+    body {
+      padding: 3rem;
+      font-size: 16px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 30rem;
+      font-family: "Lucida Console", Monaco, monospace;
+      font-size: 0.8rem;
+      line-height: 1.2;
+    }
+</style>
+
+{% if inspect %}
+<textarea name="" id="myTextarea" cols="30" rows="10"></textarea>
+{% else %}
+<table border="1">
+    <tr style='background:black; color: white'>
+        <td>neme</td>
+        <td>id</td>
+        <td>status</td>
+    </tr>
+{% for iter in container_list %}   
+    {% set id       = iter['id'] %}
+    {% set name     = iter['name'] %}
+    {% set status   = iter['status'] %}
+    <tr>
+        <td><a href="{{ url_for('index', cont_id = id) }}">{{ name }}</a></td>
+        <td>{{ id }}</td>
+        <td>{{ status }}</td>
+    </tr>
+{% endfor %}
+</table>
+{% endif %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+{% if inspect %}
+{% autoescape false %}
+<script type="text/javascript">
+    $('#myTextarea').text(JSON.stringify({{inspect}}, undefined, 4));
+</script>
+{% endautoescape %}
+{%endif%}
