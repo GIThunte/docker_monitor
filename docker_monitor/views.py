@@ -12,14 +12,14 @@ docker_client_api = docker.APIClient(base_url='unix://var/run/docker.sock')
 
 @app.route('/')
 def index():
-	if logic.check_docker_status(docker_sdk_client):
-	    id_container_for_inspect = request.args.get('cont_id')
+    if logic.check_docker_status(docker_sdk_client):
+        id_container_for_inspect = request.args.get('cont_id')
 
-	    if id_container_for_inspect:
-	        return render_template('index.html',
-	                     inspect=json.dumps(logic.docker_inspect(docker_client_api, id_container_for_inspect), indent=4),
-	                     container_logs=logic.docker_container_logs(docker_sdk_client, id_container_for_inspect).decode("utf-8"))
-	            
-	    return render_template('index.html', container_list=logic.container_list(docker_sdk_client))
-	else:
-		return render_template('docker_is_down.html', error='Seems docker is down...')
+        if id_container_for_inspect:
+            return render_template('index.html',
+                         inspect=json.dumps(logic.docker_inspect(docker_client_api, id_container_for_inspect), indent=4),
+                         container_logs=logic.docker_container_logs(docker_sdk_client, id_container_for_inspect).decode("utf-8"))
+                
+        return render_template('index.html', container_list=logic.container_list(docker_sdk_client))
+    else:
+        return render_template('docker_is_down.html', error='Seems docker is down...')

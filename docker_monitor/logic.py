@@ -16,34 +16,34 @@ def logger(text):
     print(text)
 
 def check_docker_status(client_obj):
-	try:
-		client_obj.ping()
-		return True
-	except Exception as e:
-		logger('Could not connect to docker')
-		return False
+    try:
+        client_obj.ping()
+        return True
+    except Exception as e:
+        logger('Could not connect to docker')
+        return False
 
 def docker_container_logs(client_obj, container_id):
     try:
-    	return client_obj.containers.get(container_id).logs()
+        return client_obj.containers.get(container_id).logs()
     except Exception as e:
-    	logger(e)
+        logger(e)
 
 def docker_inspect(client_obj, container_id):
     try:
-    	return client_obj.inspect_container(container_id)
+        return client_obj.inspect_container(container_id)
     except Exception as e:
-    	logger(e)
+        logger(e)
    
 def get_containers(connect_obj):
     try:
-    	return connect_obj.containers.list(all=True)
+        return connect_obj.containers.list(all=True)
     except Exception as e:
-    	logger(e)
+        logger(e)
 
 def container_list(connect_obj):
     try:
-    	return [{'name': x.name, 'id': x.short_id, 'status': x.status } for x in get_containers(connect_obj)]
+        return [{'name': x.name, 'id': x.short_id, 'status': x.status } for x in get_containers(connect_obj)]
     except Exception as e:
-    	logger(e)
+        logger(e)
     
