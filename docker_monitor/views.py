@@ -12,7 +12,7 @@ docker_client_api = docker.APIClient(base_url='unix://var/run/docker.sock')
 
 @app.route('/')
 def index():
-	if check_docker_status(docker_sdk_client):
+	if logic.check_docker_status(docker_sdk_client):
 	    id_container_for_inspect = request.args.get('cont_id')
 
 	    if id_container_for_inspect:
