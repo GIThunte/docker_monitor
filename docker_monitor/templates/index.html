@@ -10,23 +10,36 @@
         line-height: 1.2;
     }
 </style>
+{% if img_history %}
+<div><h5 class='h3'>Docker image history:</h5></div>
+<div><textarea name="" id="myTextarea" cols="30" rows="10">
+ {% for i in img_history %}
+ {{ i }}
+ {% endfor %}
+</textarea></div>
+{% endif %}
+
 {% if inspect %}
 <div><h5 class='h3'>Docker inspect:</h5></div>
 <div><textarea name="" id="myTextarea" cols="30" rows="10"></textarea></div>
-{% else %}
+{% elif container_list %}
 <table border="1" class="table table-inverse">
     <tr style='background:black; color: white'>
-        <td>Name</td>
+        <td>Image Name</td>
+        <td>Container Name</td>
         <td>Container ID</td>
         <td>Container Status</td>
     </tr>
     {% for iter in container_list %}
-    {% set id       = iter['id'] %}
-    {% set name     = iter['name'] %}
+    {% set image    = iter['image'] %}
+    {% set short_id = iter['short_id'] %}
+    {% set name     = iter['name'][0] %}
     {% set status   = iter['status'] %}
+    {% set id       = iter['id'] %}
     <tr>
-        <td><a href="{{ url_for('index', cont_id = id) }}">{{ name }}</a></td>
-        <td>{{ id }}</td>
+        <td><a href="{{ url_for('index', image_name = image) }}">{{ image }}</td>
+        <td><a href="{{ url_for('index', cont_id = short_id) }}">{{ name }}</a></td>
+        <td title="Extended ID: {{ id }}">{{ short_id }}</td>
         <td>{{ status }}</td>
     </tr>
     {% endfor %}

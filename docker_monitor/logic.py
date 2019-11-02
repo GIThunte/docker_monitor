@@ -25,7 +25,7 @@ def check_docker_status(client_obj):
 
 def docker_container_logs(client_obj, container_id):
     try:
-        return client_obj.containers.get(container_id).logs()
+        return client_obj.logs(container_id)
     except Exception as e:
         logger(e)
 
@@ -34,16 +34,28 @@ def docker_inspect(client_obj, container_id):
         return client_obj.inspect_container(container_id)
     except Exception as e:
         logger(e)
-   
+
 def get_containers(connect_obj):
     try:
-        return connect_obj.containers.list(all=True)
+        return connect_obj.containers(all=True)
+    except Exception as e:
+        logger(e)
+
+def get_image_history(connect_obj, image_name):
+    try:
+        return [x['CreatedBy'] for x in connect_obj.history(image_name)]
     except Exception as e:
         logger(e)
 
 def container_list(connect_obj):
     try:
-        return [{'name': x.name, 'id': x.short_id, 'status': x.status } for x in get_containers(connect_obj)]
+        return [{'image':    x['Image'],
+                 'name':     x['Names'],
+                 'short_id': x['Id'][:12],
+                 'status':   x['Status'],
+                 'id':       x['Id']}
+                 for x in get_containers(connect_obj)]
+
     except Exception as e:
         logger(e)
     
