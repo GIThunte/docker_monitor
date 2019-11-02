@@ -3,9 +3,6 @@ import docker
 from datetime import datetime, timedelta
 
 def printLog(func):
-    """
-    Add time to text for logging
-    """
     def wrapper(text, *args, **kwargs):
         result = func('{} {}'.format(datetime.now().strftime("%d.%m.%Y - %H:%M:%S"), text), *args, **kwargs)
         return result

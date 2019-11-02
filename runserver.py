@@ -1,7 +1,4 @@
 #!env/bin/python3
-"""
-This script runs the docker_monitor application using a development server.
-"""
 
 from os import environ
 from docker_monitor import app

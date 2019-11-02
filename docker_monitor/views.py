@@ -13,7 +13,7 @@ docker_api_client = docker.APIClient(base_url='unix://var/run/docker.sock')
 def index():
     if logic.check_docker_status(docker_api_client):
         id_container_for_inspect = request.args.get('cont_id')
-        image_name 				 = request.args.get('image_name')
+        image_name               = request.args.get('image_name')
 
         if id_container_for_inspect:
             return render_template('index.html',
@@ -21,7 +21,7 @@ def index():
                          container_logs=logic.docker_container_logs(docker_api_client, id_container_for_inspect).decode("utf-8"))
                 
         elif image_name:
-        	return render_template('index.html', img_history = logic.get_image_history(docker_api_client, image_name))
+            return render_template('index.html', img_history=logic.get_image_history(docker_api_client, image_name))
             
         return render_template('index.html', container_list=logic.container_list(docker_api_client))
     else:
