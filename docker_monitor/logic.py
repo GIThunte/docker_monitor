@@ -12,12 +12,12 @@ def printLog(func):
 def logger(text):
     print(text)
 
-def check_docker_status(client_obj):
+def check_docker_status(client_obj, host_addr):
     try:
         client_obj.ping()
         return True
     except Exception as e:
-        logger('Could not connect to docker')
+        logger('Could not connect to docker - {}'.format(host_addr))
         return False
 
 def docker_container_logs(client_obj, container_id):
@@ -56,3 +56,5 @@ def container_list(connect_obj):
     except Exception as e:
         logger(e)
     
+def get_status_hosts(name_host, address_host):
+    return {'host_name': name_host, 'addr': address_host, 'status': check_docker_status(docker.APIClient(base_url=address_host), host_addr=address_host)}

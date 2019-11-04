@@ -37,8 +37,8 @@
     {% set status   = iter['status'] %}
     {% set id       = iter['id'] %}
     <tr>
-        <td><a href="{{ url_for('index', image_name = image) }}">{{ image }}</td>
-        <td><a href="{{ url_for('index', cont_id = short_id) }}">{{ name }}</a></td>
+        <td><a href="{{ url_for('index', image_name = image, host_addr=host_addr) }}">{{ image }}</td>
+        <td><a href="{{ url_for('index', cont_id = short_id, host_addr=host_addr) }}">{{ name }}</a></td>
         <td title="Extended ID: {{ id }}">{{ short_id }}</td>
         <td>{{ status }}</td>
     </tr>
