@@ -13,13 +13,12 @@ host_lists = {'localhost': 'tcp://10.1.0.65:3325',
 
 @app.route('/')
 def dashboard():
-
     host_addr = request.args.get('host_addr')
 
     if host_addr:
         return redirect(url_for('index', host_addr=host_addr))  
-
-    return render_template('dashboard.html', list_of_hosts=[logic.get_status_hosts(x, host_lists[x]) for x in host_lists])
+    
+    return render_template('dashboard.html', list_of_hosts=logic.run_threading_host_status(host_lists))
 
 @app.route('/monitor')
 def index():
