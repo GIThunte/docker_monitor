@@ -57,4 +57,6 @@ def container_list(connect_obj):
         logger(e)
     
 def get_status_hosts(name_host, address_host):
-    return {'host_name': name_host, 'addr': address_host, 'status': check_docker_status(docker.APIClient(base_url=address_host), host_addr=address_host)}
+    return {'host_name': name_host,
+            'addr': address_host,
+            'status': check_docker_status(docker.APIClient(base_url=address_host),host_addr=address_host)}

@@ -7,7 +7,9 @@ from docker_monitor import app
 from docker_monitor import logic
 import docker
 
-host_lists = {'localhost': 'tcp://10.1.0.65:3325', 'localhost-test': 'tcp://0.0.0.0:3322'}
+host_lists = {'localhost': 'tcp://10.1.0.65:3325',
+             'localhost-test': 'tcp://0.0.0.0:3322',
+             'web': 'tcp://10.1.0.209:5355'}
 
 @app.route('/')
 def dashboard():
@@ -15,7 +17,7 @@ def dashboard():
     host_addr = request.args.get('host_addr')
 
     if host_addr:
-        return redirect(url_for('index', host_addr=host_addr))
+        return redirect(url_for('index', host_addr=host_addr))  
 
     return render_template('dashboard.html', list_of_hosts=[logic.get_status_hosts(x, host_lists[x]) for x in host_lists])
 
