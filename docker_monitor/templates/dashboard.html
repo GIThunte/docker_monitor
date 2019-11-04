@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- Custom fonts for this template-->
+<style type="text/css">
+    textarea {
+        width: 100%;
+        min-height: 30rem;
+        font-family: "Lucida Console", Monaco, monospace;
+        font-size: 12px;
+        line-height: 1.2;
+    }
+</style>
+
+{% if list_of_hosts %}
+{% autoescape false %}
+<table border="1" class="table table-inverse">
+    <tr style='background:black; color: white'>
+        <td>Host Name</td>
+        <td>Host Address</td>
+        <td>Conect Status</td>
+    </tr>
+    {% for iter in list_of_hosts %}
+        {% set host_name     = iter['host_name'] %}
+        {% set host_address  = iter['addr']      %}
+        {% set host_status   = iter['status']    %}
+        <tr>
+            <td><a href="{{ url_for('index', host_addr = host_address) }}">{{ host_name }}</td>
+            <td>{{ host_address }}</td>
+            <td>
+                {% if host_status %}
+                <b style="color:green">Connected</b>
+                {% else %}
+                <b style="color:red">Disconencted</b>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+</table>
+{% endautoescape %}
+{% endif %}
+{% endblock %}
