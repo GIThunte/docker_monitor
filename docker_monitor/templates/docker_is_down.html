@@ -1,24 +1,19 @@
-<!DOCTYPE html>
-<html>
- <head>
-  <meta charset="utf-8">
-  <title>Error docker</title>
-  <style>
-   html { height: 100%; }
-   body {
-        margin: 0;
-        height: 100%; 
-        background: url(/static/images/docker.jpg); 
-        background-size: cover; 
-   }
-   h1{
-     color: white;
-   }
-  </style>
- </head>
- <body>
-    {% if error %}
-        <div><h1>{{ error }}</h1></div>
-    {% endif %}
- </body>
-</html>
+{% extends "layout.html" %}
+{% block content %}
+<!-- Custom fonts for this template-->
+<style type="text/css">
+    textarea {
+        width: 100%;
+        min-height: 30rem;
+        font-family: "Lucida Console", Monaco, monospace;
+        font-size: 12px;
+        line-height: 1.2;
+    }
+</style>
+
+{% if error %}
+{% autoescape false %}
+<b style="color: red;">{{ error }}</b>
+{% endautoescape %}
+{% endif %}
+{% endblock %}
