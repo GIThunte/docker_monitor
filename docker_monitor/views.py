@@ -5,11 +5,15 @@ from datetime import datetime
 from flask import render_template, request, json
 from docker_monitor import app
 from docker_monitor import logic
+from jinja2 import Template
 import docker
+import json
 
-host_lists = {'localhost': 'tcp://10.1.0.65:3325',
-             'localhost-test': 'tcp://0.0.0.0:3322',
-             'web': 'tcp://10.1.0.209:5355'}
+host_lists = {'localhost': 'tcp://10.1.0.65:3325', 'web': 'tcp://10.1.0.65:3322'}
+
+@app.route('/get_host_list')
+def get_host_list():
+    return json.dumps(logic.run_threading_host_status(host_lists))
 
 @app.route('/')
 def dashboard():
@@ -18,7 +22,7 @@ def dashboard():
     if host_addr:
         return redirect(url_for('index', host_addr=host_addr))  
     
-    return render_template('dashboard.html', list_of_hosts=logic.run_threading_host_status(host_lists))
+    return render_template('dashboard.html')
 
 @app.route('/monitor')
 def index():
