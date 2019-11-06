@@ -9,10 +9,8 @@
     <td>Host Address</td>
     <td>Conect Status</td>
 </tr>
-
 </tbody>
 </table>
-
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src="/static/scripts/gen_host_list.js"></script>
 <script type="text/javascript">
@@ -21,18 +19,17 @@
         $(".text").html('<div class="cssload-thecube"><div class="cssload-cube cssload-c1"></div><div class="cssload-cube cssload-c2"></div><div class="cssload-cube cssload-c4"></div><div class="cssload-cube cssload-c3"></div></div>'); 
        
         $.getJSON('/get_host_list', function(list_of_host) {
-            $('#hl').show();
-            for (let value of list_of_host) {
-                  var host_name = value['host_name']; 
-                  var host_address = value['addr']
-                  var host_status = value['status']
-                  var link = "{{ url_for('index') }}" + "?host_addr=" + host_address
-                  addRow(host_name, host_address, host_status, link)
-            }
-            $(".text").html('')
+          $('#hl').show();
+          $.each(list_of_host, function (index, value) {
+              var host_name = value.host_name; 
+              var host_address = value.addr
+              var host_status = value.status
+              var link = "{{ url_for('index') }}" + "?host_addr=" + host_address
+              addRow(host_name, host_address, host_status, link)
+          });
+          $(".text").html('')
         });
     });
 </script>
 <div class="text"></div>
-
 {% endblock %}
