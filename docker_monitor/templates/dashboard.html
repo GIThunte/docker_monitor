@@ -1,15 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
 <!-- Custom fonts for this template-->
-<style type="text/css">
-    textarea {
-        width: 100%;
-        min-height: 30rem;
-        font-family: "Lucida Console", Monaco, monospace;
-        font-size: 12px;
-        line-height: 1.2;
-    }
-</style>
 
 <table border="1" id="hl" class="table table-inverse">
 <tbody>
@@ -22,30 +13,9 @@
 </tbody>
 </table>
 
- <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
- <script type="text/javascript">
-   function addRow(host_name, host_address, host_status){
-        var tbody = document.getElementById('hl').getElementsByTagName("TBODY")[0];
-        var row = document.createElement("TR")
-        var hostname = document.createElement("TD")
-        var link = "{{ url_for('index') }}" + "?host_addr=" + host_address
-        hostname.innerHTML = "<a href='" + link + "'>" + host_name + "</a>"
-        var hostaddress = document.createElement("TD")
-        hostaddress.appendChild (document.createTextNode(host_address))
-        
-        var hoststatus = document.createElement("TD")
-        
-        if (host_status){
-            hoststatus.innerHTML = "<b style='color:green'>Connected</b>"
-        }else{
-            hoststatus.innerHTML = "<b style='color:red'>Disconnected</b>"
-        }
-        
-        row.appendChild(hostname);
-        row.appendChild(hostaddress);
-        row.appendChild(hoststatus);
-        tbody.appendChild(row);
-    }
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src="/static/scripts/gen_host_list.js"></script>
+<script type="text/javascript">
     $(document).ready(function() {
         $('#hl').hide();
         $(".text").html('<div class="cssload-thecube"><div class="cssload-cube cssload-c1"></div><div class="cssload-cube cssload-c2"></div><div class="cssload-cube cssload-c4"></div><div class="cssload-cube cssload-c3"></div></div>'); 
@@ -56,14 +26,13 @@
                   var host_name = value['host_name']; 
                   var host_address = value['addr']
                   var host_status = value['status']
-
-                  addRow(host_name, host_address, host_status)
+                  var link = "{{ url_for('index') }}" + "?host_addr=" + host_address
+                  addRow(host_name, host_address, host_status, link)
             }
             $(".text").html('')
         });
     });
-  </script>
- 
-  <div class="text"></div>
+</script>
+<div class="text"></div>
 
 {% endblock %}
