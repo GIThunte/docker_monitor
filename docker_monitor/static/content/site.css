@@ -185,3 +185,9 @@ textarea {
         font-size: 12px;
         line-height: 1.2;
 }
+.hide{
+    display: none;
+}
+.show{
+    display: block;
+}
