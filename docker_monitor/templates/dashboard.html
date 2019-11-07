@@ -6,7 +6,6 @@
     <link rel="stylesheet" type="text/css" href="/static/content/site.css" />
 </head>
 <body ng-controller="host_list">
-    <div class="container body-content">
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -24,33 +23,38 @@
         </div> 
       </div> 
     </nav>
-    <table border="1" id="hl" class="table table-inverse">
-        <thead>
-        <tr style='background:black; color: white'>
-            <td>Host Name</td>
-            <td>Host Address</td>
-            <td>Conect Status</td>
-        </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="item in data">
-               <td><a href="[[ item.link ]]">[[ item.host_name ]]</a></td>
-               <td>[[ item.host_addr   ]]</td>
-               <td style="color:[[ item.status_color ]]">[[ item.host_status ]]</td>
+    <div class="container body-content">
+        <table border="1" id="hl" class="table table-inverse hide">
+            <thead>
+            <tr style='background:black; color: white'>
+                <td>Host Name</td>
+                <td>Host Address</td>
+                <td>Conect Status</td>
             </tr>
-        </tbody>
-    </table>
-    <div id="progress" class="hide">
-      <div class="cssload-thecube">
-          <div class="cssload-cube cssload-c1"></div>
-          <div class="cssload-cube cssload-c2"></div>
-          <div class="cssload-cube cssload-c4"></div>
-          <div class="cssload-cube cssload-c3"></div>
-       </div>
-    </div>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in data">
+                   <td><a href="[[ item.link ]]">[[ item.host_name ]]</a></td>
+                   <td>[[ item.host_addr   ]]</td>
+                   <td style="color:[[ item.status_color ]]">[[ item.host_status ]]</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div id="progress" class="show">
+          <div class="cssload-thecube">
+              <div class="cssload-cube cssload-c1"></div>
+              <div class="cssload-cube cssload-c2"></div>
+              <div class="cssload-cube cssload-c4"></div>
+              <div class="cssload-cube cssload-c3"></div>
+           </div>
+        </div>
+        <footer>
+            <p>&copy; 2019 - Alex Zubov</p>
+        </footer>
     </div>
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="/static/scripts/angular.min.js"></script>
 <script type="text/javascript"> 
     var app = angular.module('dashboard', [], function($interpolateProvider) {
       $interpolateProvider.startSymbol('[[');
@@ -58,10 +62,7 @@
     });
 
     let element = document.getElementById('hl')
-    element.className = 'hide'
-
     let prog = document.getElementById('progress')
-    prog.className = 'show'
 
     app.controller('host_list', function ($scope, $http) {
       $http.get("/get_host_list").then(function(res,status,xhr) {
