@@ -25,11 +25,11 @@ def add_new_host():
                 if logic.check_docker_status(docker.APIClient(base_url=host_addr), host_addr):
                     logic.run_insert(ip, port, db, coll, {'host_name': host_name, 'addr': host_addr})
                 else:
-                    return render_template('add_host.html', error='invalid address')
+                    return render_template('add_host.html', error='Invalid address')
                        
             except Exception as e:
                     logic.logger(e)
-                    return render_template('add_host.html', error='invalid address')
+                    return render_template('add_host.html', error='Invalid address or host not accessible')
                     
             return render_template('add_host.html')
         else:
