@@ -1,0 +1,72 @@
+<!doctype html>
+<html ng-app="addhost">
+<head>
+<meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/static/content/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/content/site.css" />
+</head>
+<body ng-controller="host_list">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{{ url_for('dashboard') }}">Docker Monitor</a>
+        </div>
+      </div> 
+    </nav>
+    <div class="container body-content">
+        <form action="" method="post">
+          <div class="form-group">
+            <label for="exampleInputName">Enter hostname</label>
+            <input type="text" class="form-control" id="exampleInputName" name="hostname" aria-describedby="name" placeholder="my hostname" value="{{ request.form.hostname }}" required>
+          </div>
+         <div class="form-group">
+            <label for="exampleInputHost">Enter address ip:port </label>
+            <input type="text" class="form-control" id="exampleInputHost" name="hostaddr" aria-describedby="host" placeholder="192.168.1.30:3333" value="{{ request.form.hostaddr }}" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Add</button>
+        </form><br><br><br>
+        <table border="1" id="hl" class="table table-inverse">
+            <thead>
+            <tr style='background:black; color: white'>
+                <td>Host Name</td>
+                <td>Host Address</td>
+            </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in data">
+                   <td><a href="[[ item.link ]]">[[ item.host_name ]]</a></td>
+                   <td>[[ item.host_addr   ]]</td>
+                </tr>
+            </tbody>
+        </table>
+        {% if error %}
+            <p style="color: red;"><b>{{ error }}</b></p>
+        {% endif %}
+        <footer>
+            <p>&copy; 2019 - Alex Zubov</p>
+        </footer>
+    </div>
+</body>
+<script src="/static/scripts/angular.min.js"></script>
+<script src="/static/scripts/jquery-1.10.2.js"></script>
+<script src="/static/scripts/bootstrap.js"></script>
+<script src="/static/scripts/respond.js"></script>
+<script type="text/javascript"> 
+    var app = angular.module('addhost', [], function($interpolateProvider) {
+      $interpolateProvider.startSymbol('[[');
+      $interpolateProvider.endSymbol(']]');
+    });
+
+    app.controller('host_list', function ($scope, $http) {
+      $http.get("/get_host_list").then(function(res,status,xhr) {
+        console.log(res.data)
+        item = []
+        for (let host_obj of res.data) {
+              item.push({'host_name': host_obj.host_name, 'host_addr': host_obj.addr })
+        }
+        $scope.data = item
+      });
+    });
+
+</script>
