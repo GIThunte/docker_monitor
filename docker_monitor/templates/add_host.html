@@ -26,21 +26,21 @@
           </div>
           <button type="submit" class="btn btn-primary">Add</button>
         </form><br><br><br>
-        <table border="1" id="hl" class="table table-inverse">
-            <thead>
-            <tr style='background:black; color: white'>
-                <td>Host Name</td>
-                <td>Host Address</td>
-                <td>Del host</td>
+        <table id="hl" class="table" border=1>
+          <thead>
+            <tr  style='background:black; color: white'>
+              <th>Host Name</th>
+              <th>Host Address</th>
+              <th>Delete Host</th>
             </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="item in data">
-                   <td>[[ item.host_name ]]</td>
-                   <td>[[ item.host_addr ]]</td>
-                   <td><a href="[[ item.link ]]">Delete host</a></td>
-                </tr>
-            </tbody>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in data">
+              <td>[[ item.host_name ]]</td>
+              <td>[[ item.host_addr ]]</td>
+              <td><a href="[[ item.link ]]">Delete host</a></td>
+            </tr>
+          </tbody>
         </table>
         {% if error %}
             <p style="color: red;"><b>{{ error }}</b></p>
@@ -62,7 +62,6 @@
 
     app.controller('host_list', function ($scope, $http) {
       $http.get("/get_host_list").then(function(res,status,xhr) {
-        console.log(res.data)
         item = []
         for (let host_obj of res.data) {
               item.push({'host_name': host_obj.host_name, 
