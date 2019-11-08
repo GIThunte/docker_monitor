@@ -16,6 +16,9 @@
         <!-- Collect the nav links, forms, and other content for toggling --> 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
+             <li><a href="{{ url_for('add_new_host') }}">Add new host</a></li>
+          </ul>
+          <ul class="nav navbar-nav">
             {% if host_addr and img_history or inspect or container_logs %}
              <li><a href="{{ url_for('index', host_addr=host_addr) }}">Back ({{ host_addr }})</a></li>
             {% endif %}
