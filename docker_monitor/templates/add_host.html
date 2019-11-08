@@ -31,12 +31,14 @@
             <tr style='background:black; color: white'>
                 <td>Host Name</td>
                 <td>Host Address</td>
+                <td>Del host</td>
             </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="item in data">
-                   <td><a href="[[ item.link ]]">[[ item.host_name ]]</a></td>
-                   <td>[[ item.host_addr   ]]</td>
+                   <td>[[ item.host_name ]]</td>
+                   <td>[[ item.host_addr ]]</td>
+                   <td><a href="[[ item.link ]]">Delete host</a></td>
                 </tr>
             </tbody>
         </table>
@@ -63,7 +65,9 @@
         console.log(res.data)
         item = []
         for (let host_obj of res.data) {
-              item.push({'host_name': host_obj.host_name, 'host_addr': host_obj.addr })
+              item.push({'host_name': host_obj.host_name, 
+                'host_addr': host_obj.addr,
+                'link': "{{ url_for('delete_host') }}" + "?host_name=" + host_obj.host_name })
         }
         $scope.data = item
       });

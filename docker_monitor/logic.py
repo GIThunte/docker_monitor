@@ -132,6 +132,12 @@ def insert_mongo_data(host, port, db_name, collection_name, insert_data):
     except Exception as e:
         logger(e)   
 
+def remove_mongo_data(host, port, db_name, collection_name, remove_data):
+    try:
+        return get_collection(host, port, db_name, collection_name).remove(remove_data)
+    except Exception as e:
+        logger(e)   
+
 def run_insert(host, port, db_name, collection_name, insert_data):
     if insert_mongo_data(host, port, db_name, collection_name, insert_data):
         return True

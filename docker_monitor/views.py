@@ -2,7 +2,7 @@
 Routes and views for the flask application.
 """
 from datetime import datetime
-from flask import render_template, request, json
+from flask import render_template, request, json, redirect, url_for
 from docker_monitor import app
 from docker_monitor import logic
 from jinja2 import Template
@@ -46,6 +46,15 @@ def add_new_host():
 @app.route('/get_host_list')
 def get_host_list():
     return json.dumps(logic.run_threading_host_status(logic.get_hosts_for_sp(ip, port, db, coll)))
+
+@app.route('/delete_host')
+def delete_host():
+    host_name = request.args.get('host_name')
+
+    if host_name:
+        logic.remove_mongo_data(ip, port, db, coll, {'host_name': host_name})
+
+    return redirect(url_for('add_new_host'))
 
 @app.route('/')
 def dashboard():
