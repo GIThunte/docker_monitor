@@ -9,10 +9,12 @@ from jinja2 import Template
 import docker
 import json
 
-ip      = '10.1.0.65'
-port    = 27017
-db      = 'host_lists'
-coll    = 'hosts'
+mongo_con_obj = logic.get_mongo_connect_obj()['con_obj']
+
+ip    = mongo_con_obj['app_mongo_ip']
+port  = mongo_con_obj['app_mongo_port']
+db    = mongo_con_obj['app_mongo_db']
+coll  = mongo_con_obj['app_mongo_coll']
 
 @app.route('/add_new_host', methods=['GET', 'POST'])
 def add_new_host():
@@ -28,7 +30,7 @@ def add_new_host():
                     else:
                         return render_template('add_host.html', error='Host is exists')
                 else:
-                    return render_template('add_host.html', error='Invalid address')
+                    return render_template('add_host.html', error='Invalid host address')
                        
             except Exception as e:
                     logic.logger(e)

@@ -3,8 +3,14 @@ from datetime import datetime, timedelta
 from threading import Thread
 from multiprocessing import Queue
 from pymongo import MongoClient
+from os import environ
 import threading
 import docker
+
+app_mongo_ip      = environ.get('MONGO_IP', '10.1.0.65')
+app_mongo_port    = int(environ.get('MONGO_PORT', '27017'))
+app_mongo_db      = environ.get('MONGO_DB', 'host_lists')
+app_mongo_coll    = environ.get('MONGO_COLLECTION', 'hosts')
 
 def printLog(func):
     def wrapper(text, *args, **kwargs):
@@ -84,6 +90,12 @@ def run_threading_host_status(host_lists):
         out_status.append(get_threads.get())
 
     return out_status
+
+def get_mongo_connect_obj():
+    return {'con_obj': {'app_mongo_ip': app_mongo_ip,
+            'app_mongo_port': app_mongo_port,
+            'app_mongo_db': app_mongo_db,
+            'app_mongo_coll': app_mongo_coll}}
 
 def get_mongo_client(host, port):
     try:
