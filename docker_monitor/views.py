@@ -47,6 +47,11 @@ def add_new_host():
 def get_host_list():
     return json.dumps(logic.run_threading_host_status(logic.get_hosts_for_sp(ip, port, db, coll)))
 
+@app.route('/get_all_list')
+def get_all_list():
+    all_hosts = logic.get_hosts_for_sp(ip, port, db, coll)
+    return json.dumps([{'host_name': x, 'addr': all_hosts[x]} for x in all_hosts])
+
 @app.route('/delete_host')
 def delete_host():
     host_name = request.args.get('host_name')

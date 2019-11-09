@@ -25,8 +25,16 @@
             <input type="text" class="form-control" id="exampleInputHost" name="hostaddr" aria-describedby="host" placeholder="192.168.1.30:3333" value="{{ request.form.hostaddr }}" required>
           </div>
           <button type="submit" class="btn btn-primary">Add</button>
-        </form><br><br><br>
-        <table id="hl" class="table" border=1>
+        </form><br><br>
+         <div id="progress" class="show">
+          <div class="cssload-thecube">
+              <div class="cssload-cube cssload-c1"></div>
+              <div class="cssload-cube cssload-c2"></div>
+              <div class="cssload-cube cssload-c4"></div>
+              <div class="cssload-cube cssload-c3"></div>
+           </div>
+        </div>
+        <table id="hl" class="table hide" border=1>
           <thead>
             <tr  style='background:black; color: white'>
               <th>Host Name</th>
@@ -60,8 +68,13 @@
       $interpolateProvider.endSymbol(']]');
     });
 
+    let element = document.getElementById('hl')
+    let prog = document.getElementById('progress')
+
     app.controller('host_list', function ($scope, $http) {
-      $http.get("/get_host_list").then(function(res,status,xhr) {
+      $http.get("/get_all_list").then(function(res,status,xhr) {
+        element.className = 'table table-inverse'
+        prog.className = 'hide'
         item = []
         for (let host_obj of res.data) {
               item.push({'host_name': host_obj.host_name, 
