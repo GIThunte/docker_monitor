@@ -61,6 +61,18 @@ def delete_host():
 
     return redirect(url_for('add_new_host'))
 
+@app.route('/ping')
+def ping():
+    host_addr = request.args.get('host_addr')
+    try:
+        if host_addr and logic.check_docker_status(docker.APIClient(base_url=host_addr), host_addr):
+            return {'ping_status': True}
+        else:
+            return {'ping_status': False}    
+    except Exception as e:
+        return {'ping_status': False} 
+        logic.logger(e)
+
 @app.route('/')
 def dashboard():
     host_addr = request.args.get('host_addr')
