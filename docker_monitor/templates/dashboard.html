@@ -1,68 +1,39 @@
-<!doctype html>
-<html ng-app="dashboard">
-<head>
-<meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="/static/content/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="/static/content/site.css" />
-</head>
-<body ng-controller="host_list">
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <a class="navbar-brand" href="{{ url_for('dashboard') }}">Docker Monitor</a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling --> 
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-             <li><a href="{{ url_for('add_new_host') }}">Edit hosts</a></li>
-          </ul>
-          <ul class="nav navbar-nav">
-            {% if host_addr and img_history or inspect or container_logs %}
-             <li><a href="{{ url_for('index', host_addr=host_addr) }}">Back ({{ host_addr }})</a></li>
-            {% endif %}
-          </ul>
-        </div> 
-      </div> 
-    </nav>
-    <div class="container body-content">
-        <table border="1" id="hl" class="table" ng-show="list_of_hosts">
-            <thead>
-            <tr style='background:black; color: white'>
-                <td>Host Name</td>
-                <td>Host Address</td>
-                <td>Conect Status</td>
+{% extends "layout.html" %}
+{% block content %}
+<div ng-controller="host_list">
+    <table border="1" id="hl" class="table" ng-show="list_of_hosts">
+        <thead>
+        <tr style='background:black; color: white'>
+            <td>Host Name</td>
+            <td>Host Address</td>
+            <td>Conect Status</td>
+        </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in data">
+               <td><a href="[[ item.link ]]">[[ item.host_name ]]</a></td>
+               <td>[[ item.host_addr   ]]</td>
+               <td style="color:[[ item.status_color ]]">[[ item.host_status ]]</td>
             </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="item in data">
-                   <td><a href="[[ item.link ]]">[[ item.host_name ]]</a></td>
-                   <td>[[ item.host_addr   ]]</td>
-                   <td style="color:[[ item.status_color ]]">[[ item.host_status ]]</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div id="progress" ng-show="progress">
-          <div class="cssload-thecube">
-              <div class="cssload-cube cssload-c1"></div>
-              <div class="cssload-cube cssload-c2"></div>
-              <div class="cssload-cube cssload-c4"></div>
-              <div class="cssload-cube cssload-c3"></div>
-           </div>
-        </div>
-        <footer>
-            <p>&copy; 2019 - Alex Zubov</p>
-        </footer>
+        </tbody>
+    </table>
+    <div id="progress" ng-show="progress">
+      <div class="cssload-thecube">
+          <div class="cssload-cube cssload-c1"></div>
+          <div class="cssload-cube cssload-c2"></div>
+          <div class="cssload-cube cssload-c4"></div>
+          <div class="cssload-cube cssload-c3"></div>
+       </div>
     </div>
-</body>
+</div>
+{% endblock %}
+{% block scripts %}
 <script src="/static/scripts/angular.min.js"></script>
 <script src="/static/scripts/jquery-1.10.2.js"></script>
 <script src="/static/scripts/bootstrap.js"></script>
 <script src="/static/scripts/respond.js"></script>
 <script type="text/javascript"> 
-    var app = angular.module('dashboard', [], function($interpolateProvider) {
+    var app = angular.module('docker_monitor', [], function($interpolateProvider) {
       $interpolateProvider.startSymbol('[[');
       $interpolateProvider.endSymbol(']]');
     });
@@ -96,7 +67,6 @@
         $scope.data = item
       });
     });
-
 </script>
-</html>
+{% endblock %}
 

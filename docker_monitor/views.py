@@ -16,8 +16,8 @@ port  = mongo_con_obj['app_mongo_port']
 db    = mongo_con_obj['app_mongo_db']
 coll  = mongo_con_obj['app_mongo_coll']
 
-@app.route('/add_new_host', methods=['GET', 'POST'])
-def add_new_host():
+@app.route('/edit_hosts', methods=['GET', 'POST'])
+def edit_hosts():
     if request.method == 'POST':
         host_name = request.form['hostname']
         host_addr = request.form['hostaddr']
@@ -28,20 +28,20 @@ def add_new_host():
                     if not logic.check_exits_host(ip, port, db, coll, {'host_name': host_name, 'addr': host_addr}):
                         logic.run_insert(ip, port, db, coll, {'host_name': host_name, 'addr': host_addr})
                     else:
-                        return render_template('add_host.html', error='Host is exists')
+                        return render_template('edit_host.html', error='Host is exists')
                 else:
-                    return render_template('add_host.html', error='Invalid host address')
+                    return render_template('edit_host.html', error='Invalid host address')
                        
             except Exception as e:
                     logic.logger(e)
-                    return render_template('add_host.html', error='Invalid address or host not accessible')
+                    return render_template('edit_host.html', error='Invalid address or host not accessible')
                     
-            return render_template('add_host.html')
+            return render_template('edit_host.html')
         else:
             error = 'You must add host address and host name'
-            return render_template('add_host.html', error=error)
+            return render_template('edit_host.html', error=error)
     
-    return render_template('add_host.html')
+    return render_template('edit_host.html')
 
 @app.route('/get_host_list')
 def get_host_list():
@@ -59,7 +59,7 @@ def delete_host():
     if host_name:
         logic.remove_mongo_data(ip, port, db, coll, {'host_name': host_name})
 
-    return redirect(url_for('add_new_host'))
+    return redirect(url_for('edit_hosts'))
 
 @app.route('/ping')
 def ping():

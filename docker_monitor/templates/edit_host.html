@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+{% block content %}
+<div ng-controller="host_list">
+    <form action="" method="post" >
+      <div class="form-group">
+        <label for="exampleInputName">Enter hostname</label>
+        <input type="text" class="form-control" id="exampleInputName" name="hostname" aria-describedby="name" placeholder="my hostname" value="{{ request.form.hostname }}" required>
+      </div>
+     <div class="form-group">
+        <label for="exampleInputHost">Enter address ip:port </label>
+        <input type="text"  ng-model="example.hostaddr" class="form-control" id="exampleInputHost" name="hostaddr" aria-describedby="host" placeholder="tcp://<host>:<port>" value="{{ request.form.hostaddr }}" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Add</button>
+      <button type="button" ng-click='ping()' class="btn btn-primary">Ping</button>
+    </form>
+    <div ng-show="not_ping">
+       <p style="color: red">Could not connect to host</p>
+    </div>
+     <div ng-show="pong">
+       <p style="color: green">Pong</p>
+    </div>
+    <br><br>
+     <div id="progress" ng-show="progress">
+      <div class="cssload-thecube">
+          <div class="cssload-cube cssload-c1"></div>
+          <div class="cssload-cube cssload-c2"></div>
+          <div class="cssload-cube cssload-c4"></div>
+          <div class="cssload-cube cssload-c3"></div>
+       </div>
+    </div>
+    <input type="submit" value="submit" class="btn btn-success btn-sm" ng-show="submit" />
+    <table id="hl" class="table" border=1 ng-show="list_of_hosts">
+      <thead>
+        <tr  style='background:black; color: white'>
+          <th>Host Name</th>
+          <th>Host Address</th>
+          <th>Delete Host</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in data">
+          <td>[[ item.host_name ]]</td>
+          <td>[[ item.host_addr ]]</td>
+          <td><a href="[[ item.link ]]">Delete host</a></td>
+        </tr>
+      </tbody>
+    </table>
+    {% if error %}
+        <p style="color: red;"><b>{{ error }}</b></p>
+    {% endif %}
+    </div>
+{% endblock %}
+{% block scripts %}
+<script src="/static/scripts/angular.min.js"></script>
+<script src="/static/scripts/jquery-1.10.2.js"></script>
+<script src="/static/scripts/bootstrap.js"></script>
+<script src="/static/scripts/respond.js"></script>
+<script type="text/javascript"> 
+  var app = angular.module('docker_monitor', [], function($interpolateProvider) {
+    $interpolateProvider.startSymbol('[[');
+    $interpolateProvider.endSymbol(']]');
+  });
+
+  app.controller('host_list', function ($scope, $http) {
+    $scope.list_of_hosts = false
+    $scope.progress      = true
+    
+    $http.get("{{ url_for('get_all_list') }}").then(function(res, status, xhr) {
+      $scope.list_of_hosts = true
+      $scope.progress      = false
+      item                 = []
+      
+      for (let host_obj of res.data) {
+              item.push({
+                'host_name': host_obj.host_name, 
+                'host_addr': host_obj.addr,
+                'link': "{{ url_for('delete_host') }}" + "?host_name=" + host_obj.host_name
+              })
+      }
+      $scope.data = item
+    });
+  
+    $scope.ping = function() {
+      let addr = $scope.example.hostaddr
+      let url = "{{ url_for('ping') }}" + "?host_addr=" + addr
+
+      $http.get(url).then(function(res, status, xhr) {
+          if (res.data['ping_status']){
+                $scope.not_ping = false;
+                $scope.pong = true;
+          } else{
+              $scope.not_ping = true;
+              $scope.pong = false;
+          }
+      });
+    };
+  });
+</script>
+{% endblock %}
