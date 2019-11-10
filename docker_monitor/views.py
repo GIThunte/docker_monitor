@@ -16,8 +16,8 @@ port  = mongo_con_obj['app_mongo_port']
 db    = mongo_con_obj['app_mongo_db']
 coll  = mongo_con_obj['app_mongo_coll']
 
-@app.route('/edit_hosts', methods=['GET', 'POST'])
-def edit_hosts():
+@app.route('/edit_host', methods=['GET', 'POST'])
+def edit_host():
     if request.method == 'POST':
         host_name = request.form['hostname']
         host_addr = request.form['hostaddr']
@@ -59,7 +59,7 @@ def delete_host():
     if host_name:
         logic.remove_mongo_data(ip, port, db, coll, {'host_name': host_name})
 
-    return redirect(url_for('edit_hosts'))
+    return redirect(url_for('edit_host'))
 
 @app.route('/ping')
 def ping():

@@ -22,23 +22,23 @@ def printLog(func):
 def logger(text):
     print(text)
 
-def check_docker_status(client_obj, host_addr):
+def check_docker_status(connect_obj, host_addr):
     try:
-        client_obj.ping()
+        connect_obj.ping()
         return True
     except Exception as e:
         logger('Could not connect to docker - {}'.format(host_addr))
         return False 
 
-def docker_container_logs(client_obj, container_id):
+def docker_container_logs(connect_obj, container_id):
     try:
-        return client_obj.logs(container_id)
+        return connect_obj.logs(container_id)
     except Exception as e:
         logger(e)
 
-def docker_inspect(client_obj, container_id):
+def docker_inspect(connect_obj, container_id):
     try:
-        return client_obj.inspect_container(container_id)
+        return connect_obj.inspect_container(container_id)
     except Exception as e:
         logger(e)
 
