@@ -11,7 +11,11 @@
         <input type="text"  ng-model="example.hostaddr" class="form-control" id="exampleInputHost" name="hostaddr" aria-describedby="host" placeholder="tcp://<host>:<port>" value="{{ request.form.hostaddr }}" required>
       </div>
       <button type="submit" class="btn btn-primary">Add</button>
-      <button type="button" ng-click='ping()' class="btn btn-primary">Ping</button>
+      <button type="button"  ng-show="ping_button" ng-click='ping()' class="btn btn-primary">Ping</button>
+      <button class="btn btn-primary" ng-show="ping_process" type="button" disabled>
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Trying connect...
+      </button>
     </form>
     <div ng-show="not_ping">
        <p style="color: red">Could not connect to host</p>
@@ -29,12 +33,12 @@
        </div>
     </div>
     <input type="submit" value="submit" class="btn btn-success btn-sm" ng-show="submit" />
-    <table id="hl" class="table" border=1 ng-show="list_of_hosts">
-      <thead>
-        <tr  style='background:black; color: white'>
-          <th>Host Name</th>
-          <th>Host Address</th>
-          <th>Delete Host</th>
+    <table id="hl" class="table table-bordered table-striped" ng-show="list_of_hosts">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Host Name</th>
+          <th scope="col">Host Address</th>
+          <th scope="col">Delete Host</th>
         </tr>
       </thead>
       <tbody>
@@ -51,10 +55,6 @@
     </div>
 {% endblock %}
 {% block scripts %}
-<script src="/static/scripts/angular.min.js"></script>
-<script src="/static/scripts/jquery-1.10.2.js"></script>
-<script src="/static/scripts/bootstrap.js"></script>
-<script src="/static/scripts/respond.js"></script>
 <script type="text/javascript"> 
   var app = angular.module('docker_monitor', [], function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
@@ -64,7 +64,8 @@
   app.controller('host_list', function ($scope, $http) {
     $scope.list_of_hosts = false
     $scope.progress      = true
-    
+    $scope.ping_button = true;
+          
     $http.get("{{ url_for('get_all_list') }}").then(function(res, status, xhr) {
       $scope.list_of_hosts = true
       $scope.progress      = false
@@ -84,7 +85,13 @@
       let addr = $scope.example.hostaddr
       let url = "{{ url_for('ping') }}" + "?host_addr=" + addr
 
+      $scope.ping_button = false;
+      $scope.ping_process = true;
+
       $http.get(url).then(function(res, status, xhr) {
+          $scope.ping_button = true;
+          $scope.ping_process = false;
+          
           if (res.data['ping_status']){
                 $scope.not_ping = false;
                 $scope.pong = true;

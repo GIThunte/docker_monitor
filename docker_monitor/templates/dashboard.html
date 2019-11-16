@@ -1,13 +1,13 @@
 {% extends "layout.html" %}
 {% block content %}
 <div ng-controller="host_list">
-    <table border="1" id="hl" class="table" ng-show="list_of_hosts">
-        <thead>
-        <tr style='background:black; color: white'>
-            <td>Host Name</td>
-            <td>Host Address</td>
-            <td>Conect Status</td>
-        </tr>
+    <table id="hl" class="table table-bordered table-striped" ng-show="list_of_hosts">
+         <thead class="thead-dark">
+          <tr>
+            <th scope="col">Host Name</th>
+            <th scope="col">Host Address</th>
+            <th scope="col">Conect Status</th>
+          </tr>
         </thead>
         <tbody>
             <tr ng-repeat="item in data">
@@ -28,10 +28,6 @@
 </div>
 {% endblock %}
 {% block scripts %}
-<script src="/static/scripts/angular.min.js"></script>
-<script src="/static/scripts/jquery-1.10.2.js"></script>
-<script src="/static/scripts/bootstrap.js"></script>
-<script src="/static/scripts/respond.js"></script>
 <script type="text/javascript"> 
     var app = angular.module('docker_monitor', [], function($interpolateProvider) {
       $interpolateProvider.startSymbol('[[');

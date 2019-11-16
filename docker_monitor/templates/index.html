@@ -23,13 +23,15 @@
 <div><h5 class='h3'>Docker inspect:</h5></div>
 <div><textarea name="" id="myTextarea" cols="30" rows="10"></textarea></div>
 {% elif container_list %}
-<table border="1" class="table table-inverse">
-    <tr style='background:black; color: white'>
-        <td>Image Name</td>
-        <td>Container Name</td>
-        <td>Container ID</td>
-        <td>Container Status</td>
-    </tr>
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Image Name</th>
+        <th scope="col">Container Name</th>
+        <th scope="col">Container ID</th>
+        <th scope="col">Container Status</th>
+      </tr>
+    </thead>
     {% for iter in container_list %}
     {% set image    = iter['image'] %}
     {% set short_id = iter['short_id'] %}
